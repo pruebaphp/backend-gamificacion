@@ -13,13 +13,13 @@ const create = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
-  try {
+  // try {
     const types_question = await TypeQuestion.findAll()
     res.status(200).json({ msg: "Tipos encontrados.", types_question });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "Surgió un problema" });
-  }
+  // } catch (error) {
+  //   console.log(error);
+  //   res.status(500).json({ msg: "Surgió un problema" });
+  // }
 };
 
 export { create, getAll };
