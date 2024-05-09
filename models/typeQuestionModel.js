@@ -13,6 +13,10 @@ const TypeQuestion = db.define("types_question", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   acronym: {
     type: DataTypes.STRING,
     allowNull: false,

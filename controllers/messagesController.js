@@ -5,7 +5,7 @@ const openai = new OpenAI({
 });
 
 const getMessage = async (prompt) => {
-  const propmpt = prompt + ".Solo dame 20 palabras.";
+  const propmpt = prompt ;
   const chatCompletion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: propmpt }],
