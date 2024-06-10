@@ -9,6 +9,7 @@ import messagesRouter from "./routes/messagesRouter.js";
 import typesQuestionRouter from "./routes/typeQuestionRouter.js";
 import difficultyRouter from "./routes/difficultyRouter.js";
 import levelRouter from "./routes/levelRouter.js";
+import questionsRouter from "./routes/questionRouter.js";
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.use("/api/messages", messagesRouter);
 app.use("/api/types-question", typesQuestionRouter);
 app.use("/api/difficulty", difficultyRouter);
 app.use("/api/levels", levelRouter);
+app.use("/api/questions", questionsRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Proyect start`);

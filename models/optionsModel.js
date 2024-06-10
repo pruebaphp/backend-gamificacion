@@ -1,28 +1,26 @@
 import { DataTypes, Sequelize } from "sequelize";
 import db from "../config/db.js";
 
-const Question = db.define("questions", {
+const Option = db.define("options", {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
     defaultValue: Sequelize.UUIDV4,
     allowNull: false,
   },
-
-  question: {
+  name: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  is_correct: {
+    type: DataTypes.BOOLEAN,
     allowNull: true,
   },
 
-  img_path: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-
-  reading: {
+  position: {
     type: DataTypes.STRING,
     allowNull: true,
   },
 });
 
-export default Question;
+export default Option;

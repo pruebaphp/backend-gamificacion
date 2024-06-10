@@ -9,7 +9,7 @@ const create = async (req, res) => {
       MEDIUM: difficulties.find((d) => d.name === "MEDIUM").id,
       HARD: difficulties.find((d) => d.name === "HARD").id,
     };
-    const targetSections = sections.slice(4, 12); 
+    const targetSections = sections.slice(4, 12)
 
     for (const section of targetSections) {
       const subsections = await Subsection.findAll({
