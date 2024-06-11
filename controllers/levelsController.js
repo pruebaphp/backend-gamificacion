@@ -9,9 +9,9 @@ const create = async (req, res) => {
       MEDIUM: difficulties.find((d) => d.name === "MEDIUM").id,
       HARD: difficulties.find((d) => d.name === "HARD").id,
     };
-    const targetSections = sections.slice(4, 12)
+  
 
-    for (const section of targetSections) {
+    for (const section of sections) {
       const subsections = await Subsection.findAll({
         where: { section_id: section.id },
       });
@@ -19,34 +19,34 @@ const create = async (req, res) => {
       for (const subsection of subsections) {
         const levelsData = [
           {
-            name: "Level 1",
+            name: "Nivel 1",
             subsection_id: subsection.id,
             difficulty_id: difficultyMap.EASY,
           },
           {
-            name: "Level 2",
+            name: "Nivel 2",
             subsection_id: subsection.id,
             difficulty_id: difficultyMap.EASY,
           },
           {
-            name: "Level 3",
+            name: "Nivel 3",
             subsection_id: subsection.id,
             difficulty_id: difficultyMap.MEDIUM,
           },
           {
-            name: "Level 4",
+            name: "Nivel 4",
             subsection_id: subsection.id,
             difficulty_id: difficultyMap.MEDIUM,
           },
           {
-            name: "Level 5",
+            name: "Nivel 5",
             subsection_id: subsection.id,
             difficulty_id: difficultyMap.HARD,
           },
         ];
 
         for (const levelData of levelsData) {
-          await new Promise((resolve) => setTimeout(resolve, 1000)); 
+          await new Promise((resolve) => setTimeout(resolve, 2000)); 
           await Level.create(levelData);
         }
       }

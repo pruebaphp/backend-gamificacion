@@ -7,6 +7,7 @@ import Level from "./levelsModel.js";
 import Difficulty from "./difficultyModel.js";
 import Option from "./optionsModel.js";
 import TypeQuestion from "./typeQuestionModel.js";
+import UserProgress from "./userProgressModel.js";
 
 Section.hasMany(Subsection, { foreignKey: "section_id" });
 Subsection.belongsTo(Section, { foreignKey: "section_id" });
@@ -23,6 +24,13 @@ Question.belongsTo(TypeQuestion, { foreignKey: "type_id" });
 Question.hasMany(Option, { foreignKey: "question_id" });
 Option.belongsTo(Question, { foreignKey: "question_id" });
 
+User.belongsToMany(Level, { through: UserProgress, foreignKey: 'user_id' });
+Level.belongsToMany(User, { through: UserProgress, foreignKey: 'level_id' });
+
+// Establecer relaciones para UserProgress
+UserProgress.belongsTo(User, { foreignKey: 'user_id' });
+UserProgress.belongsTo(Level, { foreignKey: 'level_id' });
+
 export {
   Section,
   Subsection,
@@ -33,4 +41,5 @@ export {
   Difficulty,
   TypeQuestion,
   Option,
+  UserProgress,
 };

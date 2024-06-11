@@ -6,10 +6,10 @@ const create = async (req, res) => {
     for (const [index, section] of sections.entries()) {
       for (let i = 1; i <= 5; i++) {
         const subsectionData = {
-          name: `Subsección ${i}`,
+          name: `Módulo ${i}`,
           section_id: section.id,
         };
-        await new Promise((resolve) => setTimeout(resolve, 1000 * index));
+        await new Promise((resolve) => setTimeout(resolve, 2000 ));
         await Subsection.create(subsectionData);
       }
     }

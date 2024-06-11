@@ -12,6 +12,10 @@ const Levels = db.define("levels", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  is_automatic_unlocked: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false // Por defecto, el nivel no estará automáticamente desbloqueado
+  }
 });
 
 export default Levels;
