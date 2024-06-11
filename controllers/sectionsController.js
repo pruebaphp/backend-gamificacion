@@ -61,11 +61,13 @@ const getAll = async (req, res) => {
     });
 
     sections.forEach((section) => {
-      console.log('la cantidad de secciones')
+      section.dataValues.percentage = 20;
+      section.dataValues.description = "Learning new Skills";
       section.subsections.forEach((subsection) => {
+        subsection.dataValues.description = "Learning new words";
         subsection.levels.forEach((level) => {
-          console.log('level console',level)
-          console.log('leveluserprogress',level.user_progress)
+          console.log("level console", level);
+          console.log("leveluserprogress", level.user_progress);
           //dataValues
           // console.log('level.is_automatic_unlocked',level.is_automatic_unlocked)
           if (level.user_progress === null || !level.is_automatic_unlocked) {
