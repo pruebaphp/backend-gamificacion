@@ -1,5 +1,11 @@
 import sections from "../seed/sections.js";
-import { Section, Subsection, Level, Difficulty } from "../models/index.js";
+import {
+  Section,
+  Subsection,
+  Level,
+  Difficulty,
+  UserProgress,
+} from "../models/index.js";
 
 const create = async (req, res) => {
   try {
@@ -17,6 +23,8 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
   try {
+    const user_id = "3e012ed1-f899-4097-af55-d4d5d8b0297f"; // Obtener el ID del usuario actual
+
     const sections = await Section.findAll({
       attributes: {
         exclude: ["createdAt", "updatedAt"],
@@ -40,6 +48,10 @@ const getAll = async (req, res) => {
                   model: Difficulty,
                   attributes: [["name", "name"]],
                 },
+                {
+                  model: UserProgress,
+                  // where: { user_id },
+                },
               ],
               order: [["createdAt", "ASC"]],
             },
@@ -49,15 +61,30 @@ const getAll = async (req, res) => {
     });
 
     sections.forEach((section) => {
-      section.subsections.sort((a, b) => {
-        return new Date(a.createdAt) - new Date(b.createdAt);
+      console.log('la cantidad de secciones')
+      section.subsections.forEach((subsection) => {
+        subsection.levels.forEach((level) => {
+          console.log('level console',level)
+          console.log('leveluserprogress',level.user_progress)
+          //dataValues
+          // console.log('level.is_automatic_unlocked',level.is_automatic_unlocked)
+          if (level.user_progress === null || !level.is_automatic_unlocked) {
+            level.dataValues.is_blocked = true;
+          } else {
+            level.dataValues.is_blocked = false;
+          }
+          // console.log('LEVEL CONSOLE',level)
+          delete level.user_progress; // Eliminamos el campo user_progress
+        });
+
+        subsection.levels.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
       });
 
-      section.subsections.forEach((subsection) => {
-        subsection.levels.sort((a, b) => {
-          return new Date(a.createdAt) - new Date(b.createdAt);
-        });
-      });
+      section.subsections.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
     });
 
     res.status(200).json({ sections });

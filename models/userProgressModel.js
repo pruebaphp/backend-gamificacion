@@ -28,6 +28,10 @@ const UserProgress = db.define(
       defaultValue: false,
     },
   },
+  {
+    timestamps: false,
+    tableName: "user_progress",
+  }
 );
 
 export default UserProgress;

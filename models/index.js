@@ -24,13 +24,11 @@ Question.belongsTo(TypeQuestion, { foreignKey: "type_id" });
 Question.hasMany(Option, { foreignKey: "question_id" });
 Option.belongsTo(Question, { foreignKey: "question_id" });
 
-User.belongsToMany(Level, { through: UserProgress, foreignKey: 'user_id' });
-Level.belongsToMany(User, { through: UserProgress, foreignKey: 'level_id' });
+User.hasMany(UserProgress, { foreignKey: "user_id" });
+UserProgress.belongsTo(User, { foreignKey: "user_id" });
 
-// Establecer relaciones para UserProgress
-UserProgress.belongsTo(User, { foreignKey: 'user_id' });
-UserProgress.belongsTo(Level, { foreignKey: 'level_id' });
-
+Level.hasMany(UserProgress, { foreignKey: "level_id" });
+UserProgress.belongsTo(Level, { foreignKey: "level_id" });
 export {
   Section,
   Subsection,
