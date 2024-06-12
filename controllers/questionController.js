@@ -154,4 +154,47 @@ const createImage = async (req, res, answers, type_id, level_id) => {
       .json({ status: "error", msg: "No se pudo crear la pregunta" });
   }
 };
-export { create };
+
+const getAll = async (req, res) => {
+  const level_id = req.params.level_id;
+  const questions = await Question.findAll({
+    where: { level_id },
+    attributes: {
+      reading: "opcion_contenido",
+      exclude: ["updatedAt", "createdAt", "level_id", "reading"],
+      include: [["reading", "lectura"]],
+    },
+    include: [
+      {
+        model: Option,
+        attributes: {
+          exclude: ["updatedAt", "createdAt", "question_id", "name"],
+          include: [["name", "label"]],
+        },
+      },
+      {
+        model: TypeQuestion,
+        attributes: ["acronym"], // Solo incluye el acrónimo en la salida
+        as: "types_question", // Utiliza el alias correcto definido en la asociación
+      },
+    ],
+  });
+
+  // Modificar el formato de salida para incluir el acrónimo de la pregunta
+  const formattedQuestions = questions.map((question) => {
+    const correctAnswersCount = question.options.reduce(
+      (count, option) => (option.position !== null ? count + 1 : count),
+      0
+    );
+    return {
+      ...question.toJSON(),
+      type: question.types_question.acronym,
+      correctAnswersCount,
+    };
+  });
+
+  res.json({ questions: formattedQuestions });
+  console.log(req.body);
+};
+
+export { create, getAll };
