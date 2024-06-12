@@ -1,10 +1,15 @@
-import express from 'express'
-import { create, getAll } from '../controllers/sectionsController.js'
+import express from "express";
+import {
+  create,
+  getAll,
+  getAllPlay,
+} from "../controllers/sectionsController.js";
+import auth from "../middlewares/auth.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/create',create)
-router.get('/getAll',getAll)
+router.post("/create", create);
+router.get("/getAll", getAll);
+router.get("/getAllPlay", auth, getAllPlay);
 
-export default router
-
+export default router;

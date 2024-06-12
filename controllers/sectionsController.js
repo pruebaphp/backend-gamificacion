@@ -21,9 +21,9 @@ const create = async (req, res) => {
   }
 };
 
-const getAll = async (req, res) => {
+const getAllPlay = async (req, res) => {
   try {
-    const user_id = "3e012ed1-f899-4097-af55-d4d5d8b0297f"; // Obtener el ID del usuario actual
+    const user_id = req.user.id;
 
     const sections = await Section.findAll({
       attributes: {
@@ -101,4 +101,14 @@ const getAll = async (req, res) => {
   }
 };
 
-export { create, getAll };
+const getAll = async (req, res) => {
+  try {
+    const sections = await Section.findAll({ order: [["createdAt", "ASC"]] });
+    res.status(200).json({ sections });
+  } catch (error) {
+    console.error("Error al obtener las secciones:", error);
+    res.status(500).json({ msg: "Error interno del servidor" });
+  }
+};
+
+export { create, getAllPlay, getAll };

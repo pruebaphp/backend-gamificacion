@@ -1,3 +1,4 @@
+import uploadFileFirebase from "../helpers/firebaseUpload.js";
 import { Option, Question, TypeQuestion } from "../models/index.js";
 
 const create = async (req, res) => {
@@ -22,6 +23,10 @@ const create = async (req, res) => {
           type_id,
           level_id
         );
+        break;
+      case "IMG":
+        // Bloque de código que se ejecutará si expresión === valor2
+        await createImage(req, res, answers, type_id, level_id);
         break;
       // Puedes agregar más casos según sea necesario
       default:
@@ -109,6 +114,39 @@ const createLectura = async (
     await Promise.all(promises);
     console.log("All answers saved successfully");
     res.status(200).json({ status: "ok", msg: "Pregunta de LECTURA creada" });
+  } catch (error) {
+    console.error("Error creating question and answers:", error);
+    res
+      .status(500)
+      .json({ status: "error", msg: "No se pudo crear la pregunta" });
+  }
+};
+
+const createImage = async (req, res, answers, type_id, level_id) => {
+  try {
+    console.log(answers, type_id, level_id);
+    const img_path = await uploadFileFirebase(req.file.buffer);
+    const createQuestion = new Question({
+      type_id,
+      level_id,
+      img_path,
+    });
+
+    await createQuestion.save();
+
+    const promises = JSON.parse(answers).map(async (answer) => {
+      const { name, is_correct } = answer;
+      const createOption = new Option({
+        name,
+        is_correct,
+        question_id: createQuestion.id,
+      });
+      return createOption.save();
+    });
+
+    await Promise.all(promises);
+    console.log("All answers saved successfully");
+    res.status(200).json({ status: "ok", msg: "Pregunta de IMAGEN creada" });
   } catch (error) {
     console.error("Error creating question and answers:", error);
     res
