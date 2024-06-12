@@ -48,10 +48,6 @@ const getAll = async (req, res) => {
                   model: Difficulty,
                   attributes: [["name", "name"]],
                 },
-                {
-                  model: UserProgress,
-                  // where: { user_id },
-                },
               ],
               order: [["createdAt", "ASC"]],
             },
@@ -60,38 +56,47 @@ const getAll = async (req, res) => {
       ],
     });
 
-    sections.forEach((section) => {
-      section.dataValues.percentage = 20;
-      section.dataValues.description = "Learning new Skills";
-      section.subsections.forEach((subsection) => {
-        subsection.dataValues.description = "Learning new words";
-        subsection.levels.forEach((level) => {
-          console.log("level console", level);
-          console.log("leveluserprogress", level.user_progress);
-          //dataValues
-          // console.log('level.is_automatic_unlocked',level.is_automatic_unlocked)
-          if (level.user_progress === null || !level.is_automatic_unlocked) {
-            level.dataValues.is_blocked = true;
-          } else {
+    for (const section of sections) {
+      let totalLevels = 0;
+      let completedLevels = 0;
+
+      for (const subsection of section.subsections) {
+        for (const level of subsection.levels) {
+          totalLevels++;
+
+          const level_id = level.id;
+          const findUserProgress = await UserProgress.findOne({
+            where: { level_id, correct_answers: 5, user_id },
+          });
+
+          if (findUserProgress != null || level.is_automatic_unlocked) {
+            completedLevels++;
             level.dataValues.is_blocked = false;
+          } else {
+            level.dataValues.is_blocked = true;
           }
-          // console.log('LEVEL CONSOLE',level)
+
           delete level.user_progress; // Eliminamos el campo user_progress
-        });
+        }
 
         subsection.levels.sort(
           (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         );
-      });
+      }
 
       section.subsections.sort(
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
       );
-    });
+
+      // Calcular el porcentaje de la sección
+      section.dataValues.percentage =
+        (completedLevels / totalLevels) * 100 || 0;
+      section.dataValues.description = "Learning new Skills";
+    }
 
     res.status(200).json({ sections });
   } catch (error) {
-    console.log(error);
+    console.error("Error al obtener las secciones:", error);
     res.status(500).json({ msg: "Error interno del servidor" });
   }
 };
