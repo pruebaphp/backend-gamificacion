@@ -11,17 +11,24 @@ const UserProgress = db.define(
       allowNull: false,
     },
 
-    attempts: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
+    // attempts: {
+    //   type: DataTypes.INTEGER,
+    //   defaultValue: 0,
+    // },
     correct_answers: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
+      allowNull: true,
     },
     incorrect_answers: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
+      allowNull: true,
+    },
+    total_questions: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: true,
     },
     completed: {
       type: DataTypes.BOOLEAN,

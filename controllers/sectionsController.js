@@ -66,7 +66,7 @@ const getAllPlay = async (req, res) => {
 
           const level_id = level.id;
           const findUserProgress = await UserProgress.findOne({
-            where: { level_id, correct_answers: 5, user_id },
+            where: { level_id, completed: true, user_id },
           });
 
           if (findUserProgress != null || level.is_automatic_unlocked) {

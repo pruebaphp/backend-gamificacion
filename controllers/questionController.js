@@ -161,8 +161,9 @@ const getAll = async (req, res) => {
     where: { level_id },
     attributes: {
       reading: "opcion_contenido",
-      exclude: ["updatedAt", "createdAt", "level_id", "reading"],
+      exclude: ["updatedAt", "level_id", "reading"],
       include: [["reading", "lectura"]],
+      order: [["createdAt", "DES"]],
     },
     include: [
       {
