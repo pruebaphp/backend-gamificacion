@@ -56,6 +56,11 @@ const getAllPlay = async (req, res) => {
       ],
     });
 
+    const findUserProgress = await UserProgress.findAll({
+      where: { completed: true, user_id },
+    });
+
+
     for (const section of sections) {
       let totalLevels = 0;
       let completedLevels = 0;
@@ -65,11 +70,10 @@ const getAllPlay = async (req, res) => {
           totalLevels++;
 
           const level_id = level.id;
-          const findUserProgress = await UserProgress.findOne({
-            where: { level_id, completed: true, user_id },
-          });
 
-          if (findUserProgress != null || level.is_automatic_unlocked) {
+          const findProgress = findUserProgress.find(o => o.level_id == level_id)
+
+          if (findProgress != null || level.is_automatic_unlocked) {
             completedLevels++;
             level.dataValues.is_blocked = false;
           } else {
