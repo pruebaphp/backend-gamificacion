@@ -2,14 +2,7 @@ import { Level, UserProgress } from "../models/index.js";
 import { Op } from "sequelize";
 
 const setProgress = async (req, res) => {
-  // Obtén los datos del cuerpo de la solicitud
-//   const correct_answers = 4;
-//   const incorrect_answers = 0;
-//   const total_questions = 4;
-//   const level_id = "49550d89-1f62-44f4-bb10-f0d9ead47e46";
-//   const user_id = "3e012ed1-f899-4097-af55-d4d5d8b0297f";
-  const {correct_answers,level_id} = req.body
-  
+  const { correct_answers, incorrect_answers, level_id } = req.body;
 
   try {
     // Encuentra el nivel actual
@@ -37,8 +30,9 @@ const setProgress = async (req, res) => {
     // Crear un nuevo progreso para el usuario
     const progress = await UserProgress.create({
       correct_answers,
-    //   incorrect_answers,
-    //   total_questions,
+      incorrect_answers,
+      //   total_questions,
+      previus_level: level_id,
       level_id: nextLevel.id,
       user_id: req.user.id,
       completed: correct_answers == 4 ? true : false,

@@ -1,6 +1,5 @@
 import { DataTypes, Sequelize } from "sequelize";
 import db from "../config/db.js";
-
 const UserProgress = db.define(
   "user_progress",
   {
@@ -10,11 +9,6 @@ const UserProgress = db.define(
       defaultValue: Sequelize.UUIDV4,
       allowNull: false,
     },
-
-    // attempts: {
-    //   type: DataTypes.INTEGER,
-    //   defaultValue: 0,
-    // },
     correct_answers: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
@@ -34,10 +28,24 @@ const UserProgress = db.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+
+    previus_level: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
   },
   {
-    timestamps: false,
     tableName: "user_progress",
+    indexes: [
+      {
+        unique: true,
+        fields: ["user_id", "id"],
+      },
+    ],
   }
 );
 
