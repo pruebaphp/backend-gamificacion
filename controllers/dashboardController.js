@@ -46,7 +46,7 @@ const dashboard = async (req, res) => {
       ...progress.toJSON(), // Convertir a JSON si es necesario
       current_level: levelsMap[progress.previus_level] || null,
     }));
-    lastFourUserProgress = user_progress_with_levels.slice(-5);
+    lastFourUserProgress = user_progress_with_levels.slice(-5).reverse();
     //obtener nivel del usuario
     const current_level_id =
       user_progress[user_progress.length - 1]?.previus_level;
